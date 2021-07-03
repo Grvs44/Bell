@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bell</title>
+	<script>
+	async function RingBell(button){
+		button.disabled = true
+		button.innerText = "Ringing..."
+		let name = document.getElementById("Name").value
+		try{
+			await fetch("bell.json",{method:"POST",body:"name="+name})
+			button.innerText = "Bell rang"
+		}
+		catch(Error){button.innerText = "Ring failed"}
+		setTimeout(ResetButton,4000,button)
+	}
+	function ResetButton(button){
+		button.innerText = "Ring bell"
+		button.disabled = false
+	}
+	</script>
+</head>
+<body>
+<h1>Bell</h1>
+<ul>
+<li>Name: <input type="text" id="Name"/></li>
+<li>Message: <input type="text"/></li>
+<li><button id="Bell" onclick="RingBell(this)">Ring bell</button></li>
+</ul>
+</body>
+</html>
