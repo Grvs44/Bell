@@ -22,7 +22,10 @@ def ServerRespond(clientsocket,other):
         data=f.read()
         f.close()
     elif path == "/bell.json":
-        print(GetPostData(pieces,{"name":"Someone"})["name"] + " rang the bell")
+        post = GetPostData(pieces,{"name":"Someone","message":""})
+        if post["name"] == "": post["name"] = "Someone"
+        if post["message"] != "": post["message"] = ": " + post["message"]
+        print(post["name"] + " rang the bell" + post["message"])
         playsound("Bell-ringing-sound-effect.mp3")
         data = ""
     elif path == "/shutdown":

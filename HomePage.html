@@ -2,30 +2,41 @@
 <html>
 <head>
 	<title>Bell</title>
+	<style>
+	body,.button{font-family:'Segoe UI';}
+	input{font-family:Calibri;}
+	ul{list-style-type:none;}
+	</style>
 	<script>
-	async function RingBell(button){
+	function Body_Onload(){document.forms[0].addEventListener("submit",e=>RingBell(e))}
+	async function RingBell(e){
+		e.preventDefault()
+		let form = document.forms[0]
+		let button = form["submit"]
 		button.disabled = true
-		button.innerText = "Ringing..."
-		let name = document.getElementById("Name").value
-		try{
-			await fetch("bell.json",{method:"POST",body:"name="+name})
-			button.innerText = "Bell rang"
-		}
-		catch(Error){button.innerText = "Ring failed"}
+		button.value = "Ringing..."
+		//try{
+			await fetch("bell.json",{method:"POST",body:"name="+form["name"].value+"&message="+form["message"].value})
+			button.value = "Bell rang"
+		/*}
+		catch(Error){button.value = "Ring failed"}*/
 		setTimeout(ResetButton,4000,button)
 	}
 	function ResetButton(button){
-		button.innerText = "Ring bell"
+		button.value = "Ring bell"
 		button.disabled = false
 	}
 	</script>
 </head>
-<body>
+<body onload="Body_Onload()">
 <h1>Bell</h1>
+<form>
 <ul>
-<li>Name: <input type="text" id="Name"/></li>
-<li>Message: <input type="text"/></li>
-<li><button id="Bell" onclick="RingBell(this)">Ring bell</button></li>
+<li>Name: <input type="text" name="name"/></li>
+<li>Message: <input type="text" name="message"/></li>
+<li><input class="button" type="submit" value="Ring bell" name="submit"/></li>
 </ul>
+</form>
+<a href="shutdown"><button class="button">Shut down</button></a>
 </body>
 </html>
